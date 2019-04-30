@@ -21,6 +21,8 @@ public class InterfaceHandler{
 
       public String compute(){
         //User modules here
+        //M1
+        //M2
         return "";
       }
 }
