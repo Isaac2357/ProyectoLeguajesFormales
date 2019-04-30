@@ -18,4 +18,9 @@ public class InterfaceHandler{
      public String getText(String regularExpression){
          return this.text;
       }
+
+      public String compute(){
+        //User modules here
+        return "";
+      }
 }
