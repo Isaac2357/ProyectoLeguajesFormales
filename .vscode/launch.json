@@ -1,6 +1,12 @@
 {
     "configurations": [
-        
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - M1",
+            "request": "launch",
+            "mainClass": "M1",
+            "projectName": "ProyectoLeguajesFormales_8387148"
+        },
         {
             "type": "java",
             "name": "CodeLens (Launch) - Main",
