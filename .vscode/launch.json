@@ -5,6 +5,13 @@
             "name": "CodeLens (Launch) - M2",
             "request": "launch",
             "mainClass": "M2",
+            "projectName": "ProyectoLeguajesFormales_1e4579e9"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - M2",
+            "request": "launch",
+            "mainClass": "M2",
             "projectName": "ProyectoLeguajesFormales_8387148"
         },
         {
