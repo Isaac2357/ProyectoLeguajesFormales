@@ -2,6 +2,11 @@ public class InterfaceHandler{
     
     private  String regularExpression;
     private  String text;
+    private DFA automaton;
+
+    public InterfaceHandler(){
+      automaton = new DFA();
+    }
 
     public void setRegularExpression(String regularExpression){
        this.regularExpression = regularExpression;
@@ -22,6 +27,7 @@ public class InterfaceHandler{
       public String compute(){
         //User modules here
         //M1
+
         //M2
         return "";
       }
