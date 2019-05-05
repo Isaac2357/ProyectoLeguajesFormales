@@ -56,7 +56,7 @@ public class M2{
                     // State to1State = automaton.getStateById(to1);
                     // to1State.setFinal(false);
 
-                    automaton.getFinalState().setFinal(false);
+                    automaton.getStateById(firstReIndexes.getEnd()).setFinal(false);
                     // automaton.setFinalState(automaton.getStateById(to2), true ); changed to -->
                     automaton.setFinalState(automaton.getStateById(secondReIndexes.getEnd()), true );
 
@@ -177,6 +177,7 @@ public class M2{
         
     }
         
+
     public static void main(String[] args){
         DFA a = M2.thompson("ab-c-de-f-|");
         System.out.println(a.getStates().size());

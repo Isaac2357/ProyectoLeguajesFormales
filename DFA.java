@@ -86,7 +86,7 @@ public class DFA{
     }
 
     public void  updateTransitions(int oldValue, int newValue){
-        System.out.println(oldValue + ":" + " " + oldValue + ", newValue: " + newValue);
+        // System.out.println(oldValue + ":" + " " + oldValue + ", newValue: " + newValue);
         for(int i = 0; i < this.transitions.size(); i++){
             Transition transt = this.transitions.get(i);
             if(transt.getFrom() == oldValue){
