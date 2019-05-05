@@ -129,11 +129,13 @@ public class M2{
                                             new Transition(automaton.getFinalState().getId(),
                                                            newFinalState.getId(),
                                                            'λ'));
-                                            
                     automaton.getFinalState().setFinal(false);
                     automaton.getInitialState().setInitial(false);
                     automaton.setInitialState(newInitialState, true);
                     automaton.setFinalState(newFinalState, true);
+                    automaton.addTransition(new Transition(newInitialState.getId(),
+                                            newFinalState.getId(), 'λ'));
+                    automaton.addStates(newInitialState, newFinalState);
                 }else if(character == '+'){
                     automaton.addTransition(new Transition(automaton.getFinalState().getId(), 
                                                             automaton.getInitialState().getId(),
@@ -179,7 +181,7 @@ public class M2{
         
 
     public static void main(String[] args){
-        DFA a = M2.thompson("ab-c-de-f-|");
+        DFA a = M2.thompson("ab-c|*");
         System.out.println(a.getStates().size());
         for(State s : a.getStates()){
             System.out.println(s);
