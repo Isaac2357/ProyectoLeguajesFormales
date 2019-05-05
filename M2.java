@@ -99,10 +99,11 @@ public class M2{
                     // automaton.getStateById(to1).setFinal(false);
                     // automaton.getStateById(to2).setFinal(false);
 
+                    
                     automaton.getStateById(secondReIndexes.getBegin()).setInitial(false);
-                    automaton.getStateById(firstReIndexes.getEnd()).setFinal(false);
+                    automaton.getStateById(secondReIndexes.getEnd()).setFinal(false);
 
-                    automaton.getStateById(secondReIndexes.getBegin()).setInitial(false);
+                    automaton.getStateById(firstReIndexes.getBegin()).setInitial(false);
                     automaton.getStateById(firstReIndexes.getEnd()).setFinal(false);
 
                     automaton.setInitialState(newInitialState, true);
@@ -144,6 +145,7 @@ public class M2{
                 //Si es cerradura positiva, añadir nuevo estado inicial
                 //y nuevo estado final, y enlazarlos el nuevoInt al viejoInit
                 //además lo del nuevoFinal al viejoFinal
+            
             }else{
                 from1 = from2;
                 to1 = to2;
@@ -176,7 +178,7 @@ public class M2{
     }
         
     public static void main(String[] args){
-        DFA a = M2.thompson("ab|c|");
+        DFA a = M2.thompson("ab-c-de-f-|");
         System.out.println(a.getStates().size());
         for(State s : a.getStates()){
             System.out.println(s);

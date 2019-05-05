@@ -44,6 +44,7 @@ public class DFA{
 
     public void setInitialState(State state, boolean changeState){
         this.initialState = (this.initialState == null || changeState)? state : this.initialState;
+        state.setInitial(true);
     }
 
     public void setFinalState(State state, boolean changeState){
