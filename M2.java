@@ -181,7 +181,8 @@ public class M2{
         
 
     public static void main(String[] args){
-        DFA a = M2.thompson("ab-c|*");
+        //"(a-b-c)|(d-e-f)"
+        DFA a = M2.thompson("ab-c-de-f-|");
         System.out.println(a.getStates().size());
         for(State s : a.getStates()){
             System.out.println(s);
