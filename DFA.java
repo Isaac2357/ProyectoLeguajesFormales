@@ -4,8 +4,8 @@ import java.util.List;
 
 public class DFA{
     
-    private List<State> states = null;
-    private List<Transition> transitions = null;
+    private ArrayList<State> states = null;
+    private ArrayList<Transition> transitions = null;
     private State initialState= null;
     private State finalState = null;
     private List<Integer> finalStates = null;
@@ -23,7 +23,16 @@ public class DFA{
     }
 
     public void addState(State state){
-        this.states.add(state);
+    	if(!this.states.contains(state)) {
+    		this.states.add(state);
+    	}
+    }
+    
+    public void addStateAndFinal(State state) {
+    	if(!this.states.contains(state)) {
+    		this.states.add(state);
+    	}
+    	this.finalStates.add(state.getId());
     }
 
     public void addStates(State... states){
@@ -32,9 +41,15 @@ public class DFA{
         }   
     }
 
-
+    public List<Transition> removeAllTransitions(){
+    	ArrayList<Transition> tmp = (ArrayList<Transition>) this.transitions.clone();
+    	this.transitions.clear();
+    	return tmp;
+    }
+    
     public void addTransition(Transition transition){
-        if(transition.getCharacter() != '&'){
+        if(transition.getCharacter() != '&' 
+           && !this.alphabet.contains(transition.getCharacter())){
             this.alphabet.add(transition.getCharacter());
         }
         this.transitions.add(transition);
@@ -57,6 +72,16 @@ public class DFA{
 //        this.transitions.addAll(list);
     }
     
+    public void addStates(List<State> list) {
+    	Iterator<State> ite = list.listIterator();
+        while(ite.hasNext()){
+        	State tmp = ite.next();
+        	if(!this.states.contains(tmp)) {
+        		this.states.add(tmp);
+        	}
+        }
+    }
+    
     public State getFinalState(){
         return this.finalState;
     }
@@ -69,6 +94,10 @@ public class DFA{
     public void setFinalState(State state, boolean changeState){
         this.finalState = (this.finalState == null || changeState)? state : this.finalState;  
         state.setFinal(true);
+    }
+    
+    public void removeFinalState() {
+    	this.finalState = null;
     }
 
     public int getNumberOfStates(){
