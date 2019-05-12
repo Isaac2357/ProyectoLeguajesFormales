@@ -31,4 +31,11 @@ public  class Transition{
     public String toString(){
         return this.from + " -[" + this.character + "]-> "+this.to;
     }
+    
+    @Override
+    public boolean equals(Object t1) {
+    	if(!(t1 instanceof Transition)) return false;
+    	Transition t2 = (Transition) t1;
+    	return this.from == t2.from && this.to == t2.to && this.character == t2.character;
+    }
 }

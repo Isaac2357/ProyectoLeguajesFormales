@@ -26,6 +26,10 @@ public class M2{
             return this.end;
         }
 
+        public String toString(){
+            return "(" + this.begin + "," + this.end + ");";
+        }
+
     }
     
     public static DFA thompson(String regex){
@@ -41,9 +45,9 @@ public class M2{
             char character = regex.charAt(i);
             
             if(isOperator(character)){
-                //Si es '-', concatenar ambos autómatas
+                //Si es '-', concatenar ambos automatas
                 //Unir to1 con from2, de manera que 
-                //su combinación ya nos sea final
+                //su combinacion ya nos sea final
                 //from2, quitar inicial
                 if(character == '-'){
                     //Get indexes of the regular expressions that will be concatenated
@@ -80,17 +84,17 @@ public class M2{
                     State newFinalState = new State(DFA.IDCOUNTER++);
                     
                     // automaton.addTransitions(
-                    //     new Transition(newInitialState.getId(), automaton.getInitialState().getId(), 'λ'), 
-                    //     new Transition(newInitialState.getId(), automaton.getStateById(from2).getId(), 'λ'),
-                    //     new Transition(automaton.getFinalState().getId(), newFinalState.getId(), 'λ'),
-                    //     new Transition(automaton.getStateById(to2).getId(), newFinalState.getId(), 'λ')
+                    //     new Transition(newInitialState.getId(), automaton.getInitialState().getId(), '&'), 
+                    //     new Transition(newInitialState.getId(), automaton.getStateById(from2).getId(), '&'),
+                    //     new Transition(automaton.getFinalState().getId(), newFinalState.getId(), '&'),
+                    //     new Transition(automaton.getStateById(to2).getId(), newFinalState.getId(), '&')
                     //     );
 
                         automaton.addTransitions(
-                            new Transition(newInitialState.getId(), automaton.getStateById(firstReIndexes.getBegin()).getId(), 'λ'), 
-                            new Transition(newInitialState.getId(), automaton.getStateById(secondReIndexes.getBegin()).getId(), 'λ'),
-                            new Transition(automaton.getStateById(firstReIndexes.getEnd()).getId(), newFinalState.getId(), 'λ'),
-                            new Transition(automaton.getStateById(secondReIndexes.getEnd()).getId(), newFinalState.getId(), 'λ')
+                            new Transition(newInitialState.getId(), automaton.getStateById(firstReIndexes.getBegin()).getId(), '&'), 
+                            new Transition(newInitialState.getId(), automaton.getStateById(secondReIndexes.getBegin()).getId(), '&'),
+                            new Transition(automaton.getStateById(firstReIndexes.getEnd()).getId(), newFinalState.getId(), '&'),
+                            new Transition(automaton.getStateById(secondReIndexes.getEnd()).getId(), newFinalState.getId(), '&')
                             );
 
                     automaton.addStates(newInitialState, newFinalState);
@@ -120,33 +124,52 @@ public class M2{
                 else if(character == '*'){
                     State newInitialState = new State(DFA.IDCOUNTER++);
                     State newFinalState = new State(DFA.IDCOUNTER++);
-                    automaton.addTransitions(new Transition(automaton.getFinalState().getId(),
-                                            automaton.getInitialState().getId(),
-                                            'λ'),
+                    firstReIndexes = regularExpressions.pop();
+                    automaton.addTransitions(new Transition(firstReIndexes.getEnd(),
+                                            firstReIndexes.getBegin(),
+                                            '&'),
                                             new Transition(newInitialState.getId(),
-                                                           automaton.getInitialState().getId(),
-                                                           'λ'),
-                                            new Transition(automaton.getFinalState().getId(),
+                                                           firstReIndexes.getBegin(),
+                                                           '&'),
+                                            new Transition(firstReIndexes.getEnd(),
                                                            newFinalState.getId(),
-                                                           'λ'));
-                    automaton.getFinalState().setFinal(false);
-                    automaton.getInitialState().setInitial(false);
-                    automaton.setInitialState(newInitialState, true);
-                    automaton.setFinalState(newFinalState, true);
-                    automaton.addTransition(new Transition(newInitialState.getId(),
-                                            newFinalState.getId(), 'λ'));
+                                                           '&'),
+                                            new Transition(newInitialState.getId(),
+                                            newFinalState.getId(), '&'));
+                    if(automaton.getFinalState().getId() == firstReIndexes.getEnd()){
+                        automaton.getFinalState().setFinal(false);
+                        automaton.setFinalState(newFinalState, true);
+                    }
+                    if(automaton.getInitialState().getId() == firstReIndexes.getBegin()){
+                        automaton.getInitialState().setInitial(false);
+                        automaton.setInitialState(newInitialState, true);
+                    }
+                    // automaton.getFinalState().setFinal(false);
+                    // automaton.getInitialState().setInitial(false);
+                    // automaton.setInitialState(newInitialState, true);
+                    // automaton.setFinalState(newFinalState, true);
+    
                     automaton.addStates(newInitialState, newFinalState);
+
+                    automaton.getStateById(firstReIndexes.getBegin()).setInitial(false);
+                    automaton.getStateById(firstReIndexes.getEnd()).setFinal(false);
+
+
+                    regularExpressions.add(new ReIndexes(newInitialState.getId(), newFinalState.getId()));
+
                 }else if(character == '+'){
-                    automaton.addTransition(new Transition(automaton.getFinalState().getId(), 
-                                                            automaton.getInitialState().getId(),
-                                                            'λ'));
+                    firstReIndexes = regularExpressions.pop();
+                    automaton.addTransition(new Transition(firstReIndexes.getEnd(), 
+                                                            firstReIndexes.getBegin(),
+                                                            '&'));
+                    regularExpressions.add(firstReIndexes);
                 }
                 //Si es '|', unir creando nuevo estado inicial y nuevo
                 //estado final, de manera que se creen la stransiciones 
                 //epsilon                
                 //Si es cerradura positiva, añadir nuevo estado inicial
                 //y nuevo estado final, y enlazarlos el nuevoInt al viejoInit
-                //además lo del nuevoFinal al viejoFinal
+                //ademas lo del nuevoFinal al viejoFinal
             
             }else{
                 from1 = from2;
@@ -167,7 +190,9 @@ public class M2{
                 regularExpressions.add(new ReIndexes(from.getId(), to.getId()));
             }
             
-
+            System.out.println("ite: " + i + " : " + regularExpressions.toString() + " - " + character);
+            // System.out.println(automaton.toString());
+            System.out.println("-----------------------------------------------------------------");
         }
         return automaton;
     }
@@ -181,8 +206,7 @@ public class M2{
         
 
     public static void main(String[] args){
-        //"(a-b-c)|(d-e-f)"
-        DFA a = M2.thompson("ab-c-de-f-|");
+        DFA a = M2.thompson("a*b*-*");
         System.out.println(a.getStates().size());
         for(State s : a.getStates()){
             System.out.println(s);

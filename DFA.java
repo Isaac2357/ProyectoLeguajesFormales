@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class DFA{
@@ -9,16 +10,20 @@ public class DFA{
     private State finalState = null;
     private List<Integer> finalStates = null;
     public static int IDCOUNTER = 0;
-    
+    private List<Character> alphabet = null;
     public DFA(){
         this.states = new ArrayList<State>();
         this.transitions = new ArrayList<Transition>();
         this.finalStates = new ArrayList<Integer>();
+        this.alphabet = new ArrayList<Character>();
+    }
+
+    public List<Character> getAlphabet(){
+        return this.alphabet;
     }
 
     public void addState(State state){
         this.states.add(state);
-        
     }
 
     public void addStates(State... states){
@@ -29,6 +34,9 @@ public class DFA{
 
 
     public void addTransition(Transition transition){
+        if(transition.getCharacter() != '&'){
+            this.alphabet.add(transition.getCharacter());
+        }
         this.transitions.add(transition);
     }
 
@@ -37,7 +45,18 @@ public class DFA{
             this.transitions.add(transition);
         }
     }
-
+    
+    public void addTransitions(List<Transition> list){
+    	Iterator<Transition> ite = list.listIterator();
+        while(ite.hasNext()){
+        	Transition tmp = ite.next();
+        	if(!this.transitions.contains(tmp)) {
+        		this.transitions.add(tmp);
+        	}
+        }
+//        this.transitions.addAll(list);
+    }
+    
     public State getFinalState(){
         return this.finalState;
     }
