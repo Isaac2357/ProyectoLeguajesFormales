@@ -11,6 +11,7 @@ public class DFA{
     private List<Integer> finalStates = null;
     public static int IDCOUNTER = 0;
     private List<Character> alphabet = null;
+
     public DFA(){
         this.states = new ArrayList<State>();
         this.transitions = new ArrayList<Transition>();
@@ -24,11 +25,27 @@ public class DFA{
 
     public void addState(State state){
         this.states.add(state);
+        if(state.isFinal){
+            this.finalStates.add(state.getId());
+        }
+        
+        if(state.isInitial && this.initialState == null){
+            this.initialState = state;
+        }
     }
 
     public void addStates(State... states){
         for(State state : states){
+
             this.states.add(state);
+            if(state.isFinal){
+                this.finalStates.add(state.getId());
+            }
+
+            if(state.isInitial && this.initialState == null){
+                this.initialState = state;
+            }
+
         }   
     }
 
@@ -44,6 +61,14 @@ public class DFA{
         for(Transition transition : transitions){
             this.transitions.add(transition);
         }
+    }
+
+    public void addSymbolToAlphabet(char symbol){
+        this.alphabet.add(symbol);
+    }
+
+    public void setAlphabet(List<Character> alphabet){
+        this.alphabet = alphabet;
     }
     
     public void addTransitions(List<Transition> list){
@@ -69,6 +94,7 @@ public class DFA{
     public void setFinalState(State state, boolean changeState){
         this.finalState = (this.finalState == null || changeState)? state : this.finalState;  
         state.setFinal(true);
+        this.finalStates.add(state.getId());
     }
 
     public int getNumberOfStates(){
@@ -88,6 +114,16 @@ public class DFA{
         return this.initialState;
     }
 
+    public int transitionsFunction(int from, char symbol){
+        int state = -1;
+        for(int i=0; i< this.getTransitions().size();i++){
+            if(this.getTransitions().get(i).getCharacter() == symbol && this.getTransitions().get(i).getFrom() == from){
+                state = this.getTransitions().get(i).getTo();
+            }
+        }
+        return state;
+    }
+
     public List<Integer> getFinalStates(){
         return this.finalStates;
     }
@@ -103,6 +139,16 @@ public class DFA{
             if(this.states.get(i).id == id) this.states.remove(i);       
         }        
     }
+
+    public void deleteTransitionsByFrom(int from){
+        for(int i = 0; i < this.transitions.size(); i++){
+            if(this.transitions.get(i).getFrom() == from){
+                this.transitions.remove(i); 
+                i--;
+            }       
+        }        
+    }
+
 
     public void  updateTransitions(int oldValue, int newValue){
         // System.out.println(oldValue + ":" + " " + oldValue + ", newValue: " + newValue);
