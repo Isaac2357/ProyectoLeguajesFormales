@@ -31,4 +31,11 @@ public class State {
     public boolean getFinal(){
         return this.isFinal;
     }
+    
+    @Override
+    public boolean equals(Object t1) {
+    	if(!(t1 instanceof State)) return false;
+    	State t2 = (State) t1;
+    	return this.id == t2.id;
+    }
 }
