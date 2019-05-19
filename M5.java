@@ -1,12 +1,15 @@
 import java.util.Iterator;
 import java.util.List;
-import java.util.Arrays;
+import java.util.Set;
+import java.util.ArrayList;
 import java.util.TreeSet;
 
 public class M5 {
 
     private static boolean[] visitedFinal = null;
     private static TreeSet<Pair> pairs = new TreeSet<Pair>();
+    private static ArrayList<Set<Integer>> sets = new ArrayList<>();
+
 
     private static class Pair implements Comparable{
 
@@ -75,16 +78,10 @@ public class M5 {
 
         }
 
-
-        // for(Pair a : pairs){
-        //     System.out.println(a);
-        // }
-
         eliminate(p, automaton);
-
-        // for(Pair[] au : p){
-        //     System.out.println(Arrays.toString(au));
-        // }
+        removeTransitivity(pairs);
+        mergeEquivalentStates(automaton);
+        automaton.deleteRepeatedTransitions();
 
         System.out.println("-------------------------------------------");
         System.out.println("Estados equivalentes");
@@ -93,9 +90,50 @@ public class M5 {
         for(Pair a : pairs){
             System.out.println(a);
         }
+        for(Set<Integer> s : sets){
+            System.out.println(s);
+        }
+
+        System.out.println("-------------------------------------------");
+        
+        for(State s : automaton.getStates()){
+            System.out.println(s);
+        }
+        for(Transition t : automaton.getTransitions()){
+            System.out.println(t);
+        }
+
     }
 
-    private static void eliminate(Pair[][] p, DFA automaton){
+    private static void mergeEquivalentStates(DFA automaton) {
+        //get set with equivalent states
+        for(int i = 0; i< sets.size(); i++){
+            Set<Integer> set = sets.get(i);
+            int j = 0;
+            int principalState = 0;
+            //Merge states of each set
+            for(Integer state : set){
+                if(j == 0){
+                    principalState = state;
+                }else{
+                    automaton.updateTransitions(state, principalState);
+                    automaton.deleteStateById(state);
+
+                    for(int k=0; k < automaton.getTransitions().size(); k++){
+                        Transition aux = automaton.getTransitions().get(k);
+                        if(aux.getTo() == state){
+                            automaton.updateTransitionByTo(aux.getFrom(), aux.getTo(), principalState);
+                        }
+                    }
+                    // n -> state
+                    // n -> principalState
+                }
+                j++;
+            }
+        }
+    }
+
+    private static void eliminate(Pair[][] p, DFA automaton) {
        
         boolean pairsSetChanged = false;
 
@@ -135,7 +173,6 @@ public class M5 {
                 aux.add(a);
             }
         }
-
         pairs = aux;
 
     }
@@ -186,6 +223,38 @@ public class M5 {
 
     }
 
+    private static void removeTransitivity(TreeSet<Pair> pairs){
+        boolean addToSet = false;
+        for(Pair p : pairs){
+            if(sets.size() == 0){
+                Set<Integer> set = new TreeSet<>();
+                set.add(p.getStateOne());
+                set.add(p.getStateTwo());
+                sets.add(set);
+            }else{
+                for(int i = 0; i < sets.size(); i++){
+                    Set<Integer> aux = sets.get(i);
+                    if(aux.contains(p.getStateOne()) || aux.contains(p.getStateTwo())){
+                        aux.add(p.getStateOne());
+                        aux.add(p.getStateTwo());
+                        addToSet = true;
+                        break;
+                    }
+                }
+
+                if(!addToSet){
+                    Set<Integer> setToAdd = new TreeSet<>();
+                    setToAdd.add(p.getStateOne());
+                    setToAdd.add(p.getStateTwo());
+                    sets.add(setToAdd);
+                }
+
+                addToSet = false;
+
+            }
+        }
+    }
+
     public static void main(String[] args) {
         //test class here
         DFA a = new DFA();
@@ -214,15 +283,8 @@ public class M5 {
                         new Transition(7,6,'a'),
                         new Transition(7,2,'b'));  
                         
-         minimize(a);
-
-        // for(State s : a.getStates()){
-        //   System.out.println(s);
-        // }
-        // for(Transition t : a.getTransitions()){
-        //   System.out.println(t);
-        // }
-    
+         minimize(a);   
+   
     }
 
 

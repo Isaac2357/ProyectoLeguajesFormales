@@ -194,4 +194,26 @@ public class DFA{
     public String toString(){
         return this.states.toString() + "\n" + this.transitions.toString();
     }
+
+    public void updateTransitionByTo(int from, int oldTo, int newTo ){
+        for(int i = 0; i < this.transitions.size(); i++){
+            if(this.transitions.get(i).getTo() == oldTo){
+                this.transitions.get(i).setTo(newTo);
+            }
+        }
+    }
+
+    public void deleteRepeatedTransitions(){
+        for(int i = 0; i < this.getTransitions().size(); i++){
+            Transition tmp = this.getTransitions().get(i);
+            for(int j = i+1; j < this.getTransitions().size(); j++){
+                Transition tmp2 = this.getTransitions().get(j);
+                if(tmp.getFrom() == tmp2.getFrom() && tmp.getTo() == tmp2.getTo() 
+                && tmp.getCharacter() == tmp2.getCharacter()){
+                    this.getTransitions().remove(tmp2);
+                    i--;
+                }
+            }
+        }
+    }
 }
