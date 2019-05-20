@@ -206,7 +206,7 @@ public class M2{
         
 
     public static void main(String[] args){
-        DFA a = M2.thompson("a*b*-*");
+        DFA a = M2.thompson("ab*a*|-b-a*-");
         System.out.println(a.getStates().size());
         for(State s : a.getStates()){
             System.out.println(s);

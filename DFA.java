@@ -42,7 +42,7 @@ public class DFA{
     	if(!this.states.contains(state)) {
     		this.states.add(state);
     	}
-    	this.finalStates.add(state.getId());
+    	if(state.getFinal()) this.finalStates.add(state.getId());
     }
 
     public void addStates(State... states){

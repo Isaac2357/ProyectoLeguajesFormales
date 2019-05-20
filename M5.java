@@ -137,7 +137,7 @@ public class M5 {
        
         boolean pairsSetChanged = false;
 
-        for(int i=0; i < p.length; i++){
+        for(int i=0; i < p.length; i++){    
             Pair tmp = p[i][0];
             if(automaton.getStateById(tmp.stateOne).getFinal() && !automaton.getStateById(tmp.stateTwo).getFinal()){
                 pairs.remove(tmp);
@@ -258,30 +258,20 @@ public class M5 {
     public static void main(String[] args) {
         //test class here
         DFA a = new DFA();
-        a.addStates(new State(0), new State(1), new State(2), new State(3),new State(4), new State(5), new State(6), new State(7));
+        a.addStates(new State(0), new State(1), new State(2));
         a.setInitialState(a.getStateById(0), true);
-        a.setFinalState(a.getStateById(2), true);
+        a.setFinalState(a.getStateById(1), true);
         
         
         a.addSymbolToAlphabet('a');
         a.addSymbolToAlphabet('b');
 
-        a.addTransitions(new Transition(0,1,'a'),
-                        new Transition(0,5,'b'),
-                        new Transition(1,6,'a'),
-                        new Transition(1,2,'b'),
-                        new Transition(2,0,'a'),
+        a.addTransitions(new Transition(0,0,'b'),
+                        new Transition(0,1,'a'),
+                        new Transition(1,1,'b'),
+                        new Transition(1,2,'a'),
                         new Transition(2,2,'b'),
-                        new Transition(3,2,'a'),
-                        new Transition(3,6,'b'),
-                        new Transition(4,7,'a'),
-                        new Transition(4,5,'b'),
-                        new Transition(5,2,'a'),
-                        new Transition(5,6,'b'),
-                        new Transition(6,6,'a'),
-                        new Transition(6,4,'b'),
-                        new Transition(7,6,'a'),
-                        new Transition(7,2,'b'));  
+                        new Transition(2,1,'a'));  
                         
          minimize(a);   
    

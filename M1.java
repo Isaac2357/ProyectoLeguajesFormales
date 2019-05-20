@@ -56,6 +56,7 @@ public class M1 {
 					
 		while(entrada.isEmpty() == false && error == false) {	
 			char caso = entrada.remove(0);
+			
 			if(isNumber(caso)) {
 				salida.add(caso);
 			}

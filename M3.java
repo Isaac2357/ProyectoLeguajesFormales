@@ -10,7 +10,7 @@ public class M3{
         controlList.add(state);
          if(!epsilon_c[state].contains(state)){
             epsilon_c[state].add(state);
-         }
+         } 
         // epsilon_c[state].add(state);
         // System.out.println(state); 
         
@@ -30,9 +30,9 @@ public class M3{
                     if(!epsilon_c[controlList.get(i)].contains(next.getTo())){
                     epsilon_c[controlList.get(i)].add(next.getTo());
                     }
-                }
+                } //0 --> 5 -e-> 6 -e-> 4
                 // epsilon_c[i].add()
-
+ 
                 // for(int i = 0; i < DFA.IDCOUNTER; i++){
                 //     System.out.println("DESPUES DE STATE " + state + ": " + epsilon_c[i].toString());
                 // }
@@ -120,7 +120,7 @@ public class M3{
 
     public static void main(String[] args){
         DFA a = M2.thompson("ab*-c-*");
-         for(State s : a.getStates()){
+        for(State s : a.getStates()){
             System.out.println(s);
         }
         for(Transition t : a.getTransitions()){
