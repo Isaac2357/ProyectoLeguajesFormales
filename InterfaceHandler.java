@@ -1,7 +1,7 @@
 public class InterfaceHandler{
     
-    private  String regularExpression;
-    private  String text;
+    private  String regularExpression = "";
+    private  String text = "";
     private DFA automaton;
 
     public InterfaceHandler(){
@@ -20,7 +20,7 @@ public class InterfaceHandler{
         this.text = text;
      }
      
-     public String getText(String regularExpression){
+     public String getText(){
          return this.text;
       }
 

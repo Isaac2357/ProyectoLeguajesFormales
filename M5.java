@@ -137,7 +137,7 @@ public class M5 {
        
         boolean pairsSetChanged = false;
 
-        for(int i=0; i < p.length; i++){
+        for(int i=0; i < p.length; i++){    
             Pair tmp = p[i][0];
             if(automaton.getStateById(tmp.stateOne).getFinal() && !automaton.getStateById(tmp.stateTwo).getFinal()){
                 pairs.remove(tmp);

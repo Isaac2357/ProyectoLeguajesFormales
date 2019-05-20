@@ -22,6 +22,7 @@ public class Interface extends JFrame implements ActionListener{
 	private JTextArea resultTextArea;
 	private JButton loadERButton;
 	private JButton loadTextButton;
+	private JButton executeButton;
 	private JScrollPane scrollPaneArea;
 	private JFileChooser fileChooser; 
 	private String regularExpression =  "";
@@ -40,7 +41,6 @@ public class Interface extends JFrame implements ActionListener{
 			
 
 		titleLabel = new JLabel();
-		titleLabel.setText("Texto");
 		titleLabel.setBounds(110, 20, 180, 23);
 			
 		resultTextArea = new JTextArea();
@@ -49,7 +49,7 @@ public class Interface extends JFrame implements ActionListener{
 		//permite que no queden palabras incompletas al hacer el salto de linea
 		resultTextArea.setWrapStyleWord(true);
 		scrollPaneArea = new JScrollPane();
-		scrollPaneArea.setBounds(20, 50, 350, 270);
+		scrollPaneArea.setBounds(20, 50, 550, 270);
 	    scrollPaneArea.setViewportView(resultTextArea);
 	       	
 		/*Propiedades del boton, lo instanciamos, posicionamos y activamos los eventos*/
@@ -62,16 +62,23 @@ public class Interface extends JFrame implements ActionListener{
 		loadTextButton.setText("Cargar Texto");
 		loadTextButton.setBounds(220, 330, 120, 23);
 		loadTextButton.addActionListener(this);
+
+		executeButton = new JButton();
+		executeButton.setText("Ejecutar");
+		executeButton.setBounds(100, 330, 120, 23);
+		executeButton.addActionListener(this);
 			
 		/*Agregamos los componentes al Contenedor*/
 		container.add(titleLabel);
 		container.add(scrollPaneArea);
 		container.add(loadERButton);
 		container.add(loadTextButton);
+		container.add(executeButton);
+
        	//Asigna un titulo a la barra de titulo
 		setTitle("Lenguajes Formales");
 		//tama�o de la ventana
-		setSize(400,400);
+		setSize(600,400);
 		//pone la ventana en el Centro de la pantalla
 		setLocationRelativeTo(null);
 			
@@ -82,8 +89,16 @@ public class Interface extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent evento) {
 		if (evento.getSource() == loadERButton){
 			loadRegularExpression();
+			String txt = this.resultTextArea.getText();
+			txt += "Regular Expression: \n" + this.interfaceHandler.getRegularExpression()  + "\n\n";
+			resultTextArea.setText(txt);
 		}else if (evento.getSource()==loadTextButton){
 			loadText();
+			String txt = this.resultTextArea.getText();
+			txt += "Text: \n" + this.interfaceHandler.getText()  + "\n\n";
+			resultTextArea.setText(txt);
+		}else if(evento.getSource() == executeButton){
+			interfaceHandler.compute();
 		}
 	}
 
@@ -110,6 +125,23 @@ public class Interface extends JFrame implements ActionListener{
 
 	private void loadText() {
 		//Code to load Text
+		try{
+
+			fileChooser.showOpenDialog(this);
+			File fileText = fileChooser.getSelectedFile();	
+			List<String> myText = Files.readAllLines(Paths.get(fileText.getAbsolutePath()));
+			for(String txt : myText){
+				this.text += (txt + "\n");
+			}
+	
+			interfaceHandler.setText(this.text);
+			System.out.println(interfaceHandler.getText());
+			}catch(Exception e){
+				JOptionPane.showMessageDialog(null, 
+											  e +  "\nNo se ha encontrado el archivo",
+											  "ADVERTENCIA!!!",
+											  JOptionPane.WARNING_MESSAGE);
+			}
 	}
 
 }
