@@ -74,11 +74,12 @@ public class M3{
         //e-c ((d(e-c(Qn)), a)), function, adding the new 
         //transitions
 
-        Iterator<State> ite = automaton.getStates().listIterator();
-        while(ite.hasNext()){
-            State next = ite.next();
-            int id = next.getId();
+        Iterator<State> iteStates = automaton.getStates().listIterator();
+        while(iteStates.hasNext()){
+            State nextState = iteStates.next();
+            int id = nextState.getId();
 
+            //remove epsilon transitions
             Iterator<Transition> iteTrans = automaton.getTransitions().listIterator();
             while(iteTrans.hasNext()){
                 Transition trans = iteTrans.next();
@@ -87,9 +88,14 @@ public class M3{
                 }
             }
             Iterator<Character> iteAlphabet = automaton.getAlphabet().listIterator();
+            
             while(iteAlphabet.hasNext()){
+                //symbol to proccess
                 char symbol = iteAlphabet.next();
+
+                //iterator epsilon clousure of the current estate
                 Iterator<Integer> epsilonTrans = epsilon_c[id].listIterator();
+              
                 while(epsilonTrans.hasNext()){
                     int estado = epsilonTrans.next();
 
