@@ -65,7 +65,7 @@ public class Interface extends JFrame implements ActionListener{
 
 		executeButton = new JButton();
 		executeButton.setText("Ejecutar");
-		executeButton.setBounds(100, 330, 120, 23);
+		executeButton.setBounds(340, 330, 120, 23);
 		executeButton.addActionListener(this);
 			
 		/*Agregamos los componentes al Contenedor*/

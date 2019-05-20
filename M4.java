@@ -24,7 +24,7 @@ public class M4 {
 	
 	public static void AFDConverter(DFA automaton) {
 		List<Transition> transitions = automaton.removeAllTransitions();
-		HashMap<String, Integer> newStates = new HashMap<>();
+		HashMap<String, Integer> newStates = new HashMap<>(); // {q0, q1} -> "01" -> 15
 		//Process the current existing states:
 		Stack<StateM4> statesToProcess = new Stack<>();
 		//look through the alphabet, and then
@@ -56,21 +56,22 @@ public class M4 {
 				char tempArray[] = newState.toCharArray(); 
 				Arrays.sort(tempArray);
 				newState = new String(tempArray);
-				
+
 				if(stateCount > 0) {
 					int stateID = -1;
 					
-					if(!newStates.containsKey(newState)) {
-						if(stateCount > 1) {
+					if(!newStates.containsKey(newState)) { //"01" 
+						if(stateCount > 1) { //{Q0, Q1, ..., Qn}
 							stateID = DFA.IDCOUNTER++;
 						} else {
 							System.out.println("hola  " + newState);
-							stateID = Integer.parseInt(newState);
+							stateID = Integer.parseInt(newState); 
 						}
 						automaton.addTransition(
 								new Transition(state.getId(), stateID, symbol));
 						newStates.put(newState, stateID);
 						statesToProcess.add(new StateM4(newState, stateID, newState.contains(idFinalState + "")));
+						//"1" , "01" -> 
 					} else {
 						automaton.addTransition(
 								new Transition(state.getId(), newStates.get(newState), symbol));
@@ -86,7 +87,7 @@ public class M4 {
 		}
 		System.out.println("PILA: \n" + statesToProcess);
 		System.out.println("MAPA: \n" + newStates);
-		while(!statesToProcess.isEmpty()) {
+		while(!statesToProcess.isEmpty()) { //{Q0, Q1, ..., Qn}
 			StateM4 tmpState = statesToProcess.pop();
 			State tmp = new State(tmpState.id);
 			tmp.setFinal(tmpState.isFinal);
