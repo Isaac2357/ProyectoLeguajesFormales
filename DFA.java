@@ -1,4 +1,7 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -215,5 +218,22 @@ public class DFA{
                 }
             }
         }
+    }
+
+    public void rewriteDFA(){
+        List<Integer> states = new ArrayList<>();
+        for(State s : this.getStates()){
+            states.add(s.getId());
+        }
+        Collections.sort(states);
+        for(int j = 0; j < this.getTransitions().size(); j++){
+            this.transitions.get(j).setFrom(states.indexOf(transitions.get(j).getFrom()));
+            this.transitions.get(j).setTo(states.indexOf(transitions.get(j).getTo()));
+        }
+
+        for(int k = 0; k < this.getStates().size(); k++){
+            this.getStates().get(k).setId(states.indexOf(this.getStates().get(k).getId()));
+        }
+
     }
 }

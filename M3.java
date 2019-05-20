@@ -55,6 +55,7 @@ public class M3{
         for(int i = 0; i < DFA.IDCOUNTER; i++)  epsilon_c[i] = new ArrayList<Integer>();
         
         DFS(automaton.getInitialState().getId(), automaton.getTransitions(), visited, epsilon_c, controlList);
+        
         for(int i = 0; i < DFA.IDCOUNTER; i++ ){
             visited = new boolean [DFA.IDCOUNTER/* + 1*/];
 

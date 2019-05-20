@@ -11,6 +11,7 @@ public class M5 {
     private static ArrayList<Set<Integer>> sets = new ArrayList<>();
 
 
+
     private static class Pair implements Comparable{
 
         private int stateOne;
@@ -59,6 +60,8 @@ public class M5 {
     }
 
     public static void minimize(DFA automaton){
+        automaton.rewriteDFA();
+        
         DFS(automaton.getInitialState().getId(), automaton.getTransitions(), new boolean[automaton.getNumberOfStates()]);
        
         deleteUnreachableStates(automaton);
@@ -198,7 +201,7 @@ public class M5 {
         return (n * (n + 1)) / 2;
     }
 
-    private static void DFS(int state, List<Transition> transitions, boolean[] visited){
+    private static void     DFS(int state, List<Transition> transitions, boolean[] visited){
         visited[state] = true;
         Iterator<Transition> ite = transitions.listIterator(); 
         while (ite.hasNext()) { 
@@ -258,7 +261,7 @@ public class M5 {
     public static void main(String[] args) {
         //test class here
         DFA a = new DFA();
-        a.addStates(new State(0), new State(1), new State(2));
+        a.addStates(new State(0), new State(1), new State(2), new State(7), new State(4));
         a.setInitialState(a.getStateById(0), true);
         a.setFinalState(a.getStateById(1), true);
         
@@ -271,9 +274,15 @@ public class M5 {
                         new Transition(1,1,'b'),
                         new Transition(1,2,'a'),
                         new Transition(2,2,'b'),
-                        new Transition(2,1,'a'));  
-                        
-         minimize(a);   
+                        new Transition(2,1,'a'),
+                        new Transition(4,1,'a'),
+                        new Transition(4,2,'b'),
+                        new Transition(7,7,'a'),
+                        new Transition(7,0,'b'));  
+
+        System.out.println(a);
+        minimize(a);  
+        System.out.println(a); 
    
     }
 
