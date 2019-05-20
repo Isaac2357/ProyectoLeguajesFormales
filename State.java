@@ -11,6 +11,10 @@ public class State {
     public int getId(){
         return this.id;
     }
+
+    public void setId(int newId){
+        this.id = newId;
+    }
     
     public String toString(){
         return "S: " + this.id + " (initial: " + isInitial + ", final:" + isFinal + ")";
